@@ -100,8 +100,8 @@ def sync_to_obsidian(browser):
                         for field in field_list:
                             if field in media_list:
                                 shutil.copy2(
-                                    os.path.join(mw.col.media.dir(), media),
-                                    os.path.join(attachment_folder_path, media),
+                                    os.path.join(mw.col.media.dir(), field),
+                                    os.path.join(attachment_folder_path, field),
                                 )
                                 f.write(f"\n![[{field}]]\n")
                             else:
