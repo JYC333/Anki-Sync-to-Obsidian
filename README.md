@@ -7,3 +7,5 @@ This add-on is a complement for the Obsidian plugin note synchronizer(https://gi
 The generated note format follow the standard of note synchronizer.
 
 This add-on only generate note if there is no obsidian note has the same name as the anki note.
+
+The Ankiweb URL https://ankiweb.net/shared/info/327710559
