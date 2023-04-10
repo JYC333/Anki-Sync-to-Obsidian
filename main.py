@@ -1,8 +1,14 @@
 import os
 import re
+import sys
 import json
 import shutil
 from datetime import datetime
+
+sys.path.append(os.path.dirname(__file__))
+
+
+import chardet
 
 import anki
 from aqt import mw
@@ -41,8 +47,13 @@ def sync_to_obsidian(browser):
     if config["obsidianPath"] == "":
         showInfo("Obsidian path is empty, please add it in setting.")
     else:
-        obsidian_attachment_folder = json.load(
-            open(os.path.join(config["obsidianPath"], ".obsidian", "app.json"))
+        app_json = open(
+            os.path.join(config["obsidianPath"], ".obsidian", "app.json"), "rb"
+        ).read()
+        detect_encoding = chardet.detect(app_json)
+
+        obsidian_attachment_folder = json.loads(
+            app_json.decode(encoding=detect_encoding["encoding"])
         )["attachmentFolderPath"]
 
         notes = [mw.col.get_note(note_id) for note_id in browser.selectedNotes()]
