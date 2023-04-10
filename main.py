@@ -67,7 +67,11 @@ def sync_to_obsidian(browser):
             media_list_front = mw.col.media.files_in_str(note.mid, note.fields[0])
             if os.path.exists(os.path.join(folder_path, file_name + ".md")):
                 continue
-            with open(os.path.join(folder_path, file_name + ".md"), "w") as f:
+            with open(
+                os.path.join(folder_path, file_name + ".md"),
+                "w",
+                encoding=detect_encoding["encoding"],
+            ) as f:
                 f.write(f"---\nmid: {note.mid}\nnid: {note.id}\ntags: [")
                 if len(note.tags) > 0:
                     f.write(f"{note.tags[0]}")
