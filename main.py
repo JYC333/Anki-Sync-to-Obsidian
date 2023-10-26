@@ -52,9 +52,15 @@ def sync_to_obsidian(browser):
         ).read()
         detect_encoding = chardet.detect(app_json)
 
-        obsidian_attachment_folder = json.loads(
-            app_json.decode(encoding=detect_encoding["encoding"])
-        )["attachmentFolderPath"]
+        try:
+            obsidian_attachment_folder = json.loads(
+                app_json.decode(encoding=detect_encoding["encoding"])
+            )["attachmentFolderPath"]
+        except:
+            showInfo(
+                "Failed to get attachment folder path from Obsidian setting, using vault folder."
+            )
+            obsidian_attachment_folder = "./"
 
         notes = [mw.col.get_note(note_id) for note_id in browser.selectedNotes()]
 
@@ -67,11 +73,7 @@ def sync_to_obsidian(browser):
             media_list_front = mw.col.media.files_in_str(note.mid, note.fields[0])
             if os.path.exists(os.path.join(folder_path, file_name + ".md")):
                 continue
-            with open(
-                os.path.join(folder_path, file_name + ".md"),
-                "w",
-                encoding=detect_encoding["encoding"],
-            ) as f:
+            with open(os.path.join(folder_path, file_name + ".md"), "w") as f:
                 f.write(f"---\nmid: {note.mid}\nnid: {note.id}\ntags: [")
                 if len(note.tags) > 0:
                     f.write(f"{note.tags[0]}")
